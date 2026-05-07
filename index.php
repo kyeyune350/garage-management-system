@@ -1,64 +1,119 @@
-<?php include 'db_connect.php'; ?>
+<?php
+include 'db_connect.php';
+
+$customers = mysqli_query($conn, "SELECT * FROM customers LIMIT 5");
+$bookings = mysqli_query($conn, "SELECT * FROM bookings LIMIT 5");
+?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Garage Management System</title>
+    <title>Garage Management Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>Garage Management System</h1>
+<div class="sidebar">
+    <h2>Garage DBMS</h2>
 
-<div class="container">
+    <ul>
+        <li>Dashboard</li>
+        <li>Customers</li>
+        <li>Bookings</li>
+        <li>Vehicles</li>
+        <li>Payments</li>
+        <li>Reports</li>
+        <li>Mechanics</li>
+    </ul>
+</div>
 
-    <h2>Clients</h2>
+<div class="main">
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-        </tr>
+    <div class="topbar">
+        <h1>Garage Management System</h1>
+        <p>Manager Dashboard</p>
+    </div>
 
-        <?php
-        $clients = mysqli_query($conn, "SELECT * FROM clients");
+    <div class="cards">
 
-        while($row = mysqli_fetch_assoc($clients)) {
-            echo "<tr>
-                    <td>{$row['client_id']}</td>
-                    <td>{$row['client_name']}</td>
-                    <td>{$row['phone']}</td>
-                    <td>{$row['email']}</td>
-                  </tr>";
-        }
-        ?>
-    </table>
+        <div class="card">
+            <h3>Total Customers</h3>
+            <p>
+                <?php
+                $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM customers"));
+                echo $count;
+                ?>
+            </p>
+        </div>
 
-    <h2>Cars</h2>
+        <div class="card">
+            <h3>Total Bookings</h3>
+            <p>
+                <?php
+                $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM bookings"));
+                echo $count;
+                ?>
+            </p>
+        </div>
 
-    <table>
-        <tr>
-            <th>Plate Number</th>
-            <th>Model</th>
-            <th>Brand</th>
-            <th>Year</th>
-        </tr>
+        <div class="card">
+            <h3>Total Vehicles</h3>
+            <p>
+                <?php
+                $count = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM vehicles"));
+                echo $count;
+                ?>
+            </p>
+        </div>
 
-        <?php
-        $cars = mysqli_query($conn, "SELECT * FROM cars");
+    </div>
 
-        while($row = mysqli_fetch_assoc($cars)) {
-            echo "<tr>
-                    <td>{$row['plate_number']}</td>
-                    <td>{$row['model']}</td>
-                    <td>{$row['brand']}</td>
-                    <td>{$row['manufacture_year']}</td>
-                  </tr>";
-        }
-        ?>
-    </table>
+    <div class="table-section">
+
+        <div class="table-box">
+            <h2>Recent Customers</h2>
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+
+                <?php while($row = mysqli_fetch_assoc($customers)) { ?>
+
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['name']; ?></td>
+                </tr>
+
+                <?php } ?>
+
+            </table>
+        </div>
+
+        <div class="table-box">
+            <h2>Recent Bookings</h2>
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                </tr>
+
+                <?php while($row = mysqli_fetch_assoc($bookings)) { ?>
+
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['status']; ?></td>
+                </tr>
+
+                <?php } ?>
+
+            </table>
+        </div>
+
+    </div>
 
 </div>
 
